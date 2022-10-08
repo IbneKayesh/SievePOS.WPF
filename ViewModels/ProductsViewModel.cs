@@ -4,11 +4,13 @@ using System.Windows.Input;
 using System.Windows;
 using SievePOS.Services.POS;
 using SievePOS.Models;
+using System.Threading.Tasks;
 
 namespace SievePOS.ViewModels
 {
     public class ProductsViewModel
     {
+       
         public string Title = "Products";
         private ICommand _saveCommand;
         private ICommand _resetCommand;

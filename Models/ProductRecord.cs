@@ -1,10 +1,15 @@
 ﻿using SievePOS.ViewModels;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace SievePOS.Models
 {
-    public class ProductRecord: ViewModelBase
+    public class ProductRecord : ViewModelBase
     {
+
         private int _ID;
         public int ID
         {
@@ -18,7 +23,10 @@ namespace SievePOS.Models
                 OnPropertyChanged("ID");
             }
         }
+
         private string _BAR_CODE;
+
+        [Required(ErrorMessage = "Must not be empty.")]
         public string BAR_CODE
         {
             get
@@ -27,6 +35,7 @@ namespace SievePOS.Models
             }
             set
             {
+                ValidateProperty(value, "BAR_CODE");
                 _BAR_CODE = value;
                 OnPropertyChanged("BAR_CODE");
             }
@@ -102,7 +111,7 @@ namespace SievePOS.Models
 
 
         private ObservableCollection<ProductRecord> _ProductRecords;
-        public  ObservableCollection<ProductRecord> ProductRecords
+        public ObservableCollection<ProductRecord> ProductRecords
         {
             get
             {
@@ -113,6 +122,15 @@ namespace SievePOS.Models
                 _ProductRecords = value;
                 OnPropertyChanged("ProductRecords");
             }
+        }
+
+
+        private void ValidateProperty<T>(T value, string name)
+        {
+            Validator.ValidateProperty(value, new ValidationContext(this, null, null)
+            {
+                MemberName = name
+            });
         }
     }
 }
