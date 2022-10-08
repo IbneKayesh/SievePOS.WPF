@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace SievePOS.ViewModels
+namespace SievePOS.Utilities
 {
     public class MessagesBox
     {

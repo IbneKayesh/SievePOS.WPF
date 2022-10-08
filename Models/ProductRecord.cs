@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
 using System.Xml.Linq;
 
 namespace SievePOS.Models
 {
-    public class ProductRecord : ViewModelBase
+    public class ProductRecord : ViewModelBase, IDataErrorInfo
     {
 
         private int _ID;
@@ -25,8 +27,6 @@ namespace SievePOS.Models
         }
 
         private string _BAR_CODE;
-
-        [Required(ErrorMessage = "Must not be empty.")]
         public string BAR_CODE
         {
             get
@@ -35,11 +35,12 @@ namespace SievePOS.Models
             }
             set
             {
-                ValidateProperty(value, "BAR_CODE");
                 _BAR_CODE = value;
                 OnPropertyChanged("BAR_CODE");
             }
         }
+
+
         private string _PRODUCT_NAME;
         public string PRODUCT_NAME
         {
@@ -53,6 +54,8 @@ namespace SievePOS.Models
                 OnPropertyChanged("PRODUCT_NAME");
             }
         }
+
+
         private decimal _LAST_PRATE;
         public decimal LAST_PRATE
         {
@@ -66,6 +69,8 @@ namespace SievePOS.Models
                 OnPropertyChanged("LAST_PRATE");
             }
         }
+
+
         private decimal _AVG_RATE;
         public decimal AVG_RATE
         {
@@ -79,6 +84,8 @@ namespace SievePOS.Models
                 OnPropertyChanged("AVG_RATE");
             }
         }
+
+
         private decimal _MRP_RATE;
         public decimal MRP_RATE
         {
@@ -123,14 +130,154 @@ namespace SievePOS.Models
                 OnPropertyChanged("ProductRecords");
             }
         }
-
-
-        private void ValidateProperty<T>(T value, string name)
+        public string this[string name]
         {
-            Validator.ValidateProperty(value, new ValidationContext(this, null, null)
+            get
             {
-                MemberName = name
-            });
+                validateForm();
+
+                string result = null;
+
+                switch (name)
+                {
+                    case "BAR_CODE":
+                        if (string.IsNullOrWhiteSpace(BAR_CODE))
+                        {
+                            result = "Barcode cannot be empty";
+                        }
+                        else if (BAR_CODE.Length < 4)
+                        {
+                            result = $"Barcode must be a minimum of 4 characters.";
+                        }
+                        break;
+
+                    case "PRODUCT_NAME":
+                        if (string.IsNullOrWhiteSpace(PRODUCT_NAME))
+                        {
+                            result = "Product name cannot be empty";
+                        }
+                        else if (PRODUCT_NAME.Length < 3)
+                        {
+                            result = $"Product name must be a minimum of 3 characters.";
+                        }
+                        break;
+
+                    case "LAST_PRATE":
+                        if (LAST_PRATE < 0)
+                        {
+                            result = "Last Purchase rate should not be negetive";
+                        }
+                        else if (LAST_PRATE > int.MaxValue)
+                        {
+                            result = $"Last purchase rate maximum value is {int.MaxValue}.";
+                        }
+                        break;
+
+                    case "AVG_RATE":
+                        if (AVG_RATE != 0)
+                        {
+                            result = "Average rate should be zero";
+                        }
+                        break;
+
+                    case "MRP_RATE":
+                        if (MRP_RATE < 0)
+                        {
+                            result = "MRP rate should not be negetive";
+                        }
+                        else if (MRP_RATE > int.MaxValue)
+                        {
+                        }
+                        break;
+
+                    case "STOCK_QTY":
+                        if (STOCK_QTY < 0)
+                        {
+                            result = "Stock should not be negetive";
+                        }
+                        else if (STOCK_QTY > int.MaxValue)
+                        {
+                            result = $"Stock maximum value is {int.MaxValue}.";
+                        }
+                        break;
+                }
+
+                if (ErrorCollection.ContainsKey(name))
+                    ErrorCollection[name] = result;
+                else if (result != null)
+                    ErrorCollection.Add(name, result);
+
+                OnPropertyChanged("ErrorCollection");
+                return result;
+            }
         }
+
+
+        private bool _formIsValid;
+        public bool formIsValid
+        {
+            get
+            {
+                return _formIsValid;
+            }
+            set
+            {
+                _formIsValid = value;
+                OnPropertyChanged("formIsValid");
+            }
+        }
+        private void validateForm()
+        {
+            formIsValid = true;
+            if (string.IsNullOrWhiteSpace(BAR_CODE))
+            {
+                formIsValid = false;
+            }
+            else if (BAR_CODE.Length < 4)
+            {
+                formIsValid = false;
+            }
+            if (string.IsNullOrWhiteSpace(PRODUCT_NAME))
+            {
+                formIsValid = false;
+            }
+            else if (PRODUCT_NAME.Length < 3)
+            {
+                formIsValid = false;
+            }
+            if (LAST_PRATE < 0)
+            {
+                formIsValid = false;
+            }
+            else if (LAST_PRATE > int.MaxValue)
+            {
+                formIsValid = false;
+            }
+
+            if (AVG_RATE != 0)
+            {
+                formIsValid = false;
+            }
+            if (MRP_RATE < 0)
+            {
+                formIsValid = false;
+            }
+            else if (MRP_RATE > int.MaxValue)
+            {
+                formIsValid = false;
+            }
+            if (STOCK_QTY < 0)
+            {
+                formIsValid = false;
+            }
+            else if (STOCK_QTY > int.MaxValue)
+            {
+                formIsValid = false;
+            }
+        }
+
+
+
+
     }
 }

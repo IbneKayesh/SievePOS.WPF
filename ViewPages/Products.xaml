@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:SievePOS.ViewPages"
       mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800"
       Title="Products">
-            <StackPanel Orientation="Vertical">
+    <StackPanel Orientation="Vertical">
         <GroupBox Header="Products Form" Margin="5">
             <Grid Height="60">
                 <Grid.RowDefinitions>
@@ -28,40 +28,44 @@
 
                 <Label Content="Barcode" HorizontalAlignment="Left" 
                         VerticalContentAlignment="Center" Grid.Column="0" Grid.Row="0"/>
-                <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtBAR_CODE" Height="22" 
-                        Text="{Binding Path=ProductRecord.BAR_CODE, Mode=TwoWay,
-                        ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
-                          Validation.ErrorTemplate="{StaticResource errorTemplate}"
-                        Margin="2"  Width="180" HorizontalAlignment="Left"/>                
-                
+
+                <TextBox  Grid.Row="0" Grid.Column="1" x:Name="txtBAR_CODE" Height="22" Margin="2" Width="180" HorizontalAlignment="Left"
+                          Text="{Binding Path=ProductRecord.BAR_CODE, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                          ToolTip="{Binding ProductRecord.ErrorCollection[BAR_CODE]}"/>
+
                 <Label Content="Name" HorizontalAlignment="Left" VerticalContentAlignment="Center" 
                         Grid.Row="0" Grid.Column="2"/>
-                <TextBox Grid.Row="0" Grid.Column="3" x:Name="txtPRODUCT_NAME" Height="22" 
-                        Text="{Binding Path=ProductRecord.PRODUCT_NAME, Mode=TwoWay,ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="180" HorizontalAlignment="Left"/>
-                
+                <TextBox Grid.Row="0" Grid.Column="3" x:Name="txtPRODUCT_NAME" Height="22"  Margin="2" Width="180" HorizontalAlignment="Left"
+                        Text="{Binding Path=ProductRecord.PRODUCT_NAME, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        ToolTip="{Binding ProductRecord.ErrorCollection[PRODUCT_NAME]}"/>
+
                 <Label Content="Last Purchase Rate" HorizontalAlignment="Left" VerticalContentAlignment="Center" 
                         Grid.Row="0" Grid.Column="4" />
-                <TextBox Grid.Row="0" Grid.Column="5" x:Name="txtLAST_PRATE" Height="22" 
-                        Text="{Binding Path=ProductRecord.LAST_PRATE, Mode=TwoWay}" Margin="2" Width="180" HorizontalAlignment="Left"/>                
-                
+                <TextBox Grid.Row="0" Grid.Column="5" x:Name="txtLAST_PRATE" Height="22"  Margin="2" Width="180" HorizontalAlignment="Left"
+                        Text="{Binding Path=ProductRecord.LAST_PRATE, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        ToolTip="{Binding ProductRecord.ErrorCollection[LAST_PRATE]}" PreviewTextInput="NumberOnly_PreviewTextInput"/>
+
                 <Label Content="Avg Rate" HorizontalAlignment="Left" VerticalContentAlignment="Center" 
                         Grid.Row="1" Grid.Column="0" />
-                <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtAVG_RATE" Height="22"
-                        Text="{Binding Path=ProductRecord.AVG_RATE, Mode=TwoWay}" Margin="2" Width="180" HorizontalAlignment="Left"/>
+                <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtAVG_RATE" Height="22" Margin="2" Width="180" HorizontalAlignment="Left"
+                        Text="{Binding Path=ProductRecord.AVG_RATE, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        ToolTip="{Binding ProductRecord.ErrorCollection[AVG_RATE]}" PreviewTextInput="NumberOnly_PreviewTextInput"/>
 
                 <Label Content="MRP Rate" HorizontalAlignment="Left" VerticalContentAlignment="Center" 
                         Grid.Row="1" Grid.Column="2" />
-                <TextBox Grid.Row="1" Grid.Column="3" x:Name="txtMRP_RATE" Height="22"
-                        Text="{Binding Path=ProductRecord.MRP_RATE, Mode=TwoWay}" Margin="2" Width="180" HorizontalAlignment="Left"/>
+                <TextBox Grid.Row="1" Grid.Column="3" x:Name="txtMRP_RATE" Height="22" Margin="2" Width="180" HorizontalAlignment="Left"
+                        Text="{Binding Path=ProductRecord.MRP_RATE, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        ToolTip="{Binding ProductRecord.ErrorCollection[MRP_RATE]}" PreviewTextInput="NumberOnly_PreviewTextInput"/>
 
                 <Label Content="Stock Qty" HorizontalAlignment="Left" VerticalContentAlignment="Center" 
                         Grid.Row="1" Grid.Column="4" />
-                <TextBox Grid.Row="1" Grid.Column="5" x:Name="txtSTOCK_QTY" Height="22"
-                        Text="{Binding Path=ProductRecord.STOCK_QTY, Mode=TwoWay}" Margin="2" Width="180" HorizontalAlignment="Left"/>
+                <TextBox Grid.Row="1" Grid.Column="5" x:Name="txtSTOCK_QTY" Height="22" Margin="2" Width="180" HorizontalAlignment="Left"
+                        Text="{Binding Path=ProductRecord.STOCK_QTY, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        ToolTip="{Binding ProductRecord.ErrorCollection[STOCK_QTY]}" PreviewTextInput="NumberOnly_PreviewTextInput"/>
             </Grid>
         </GroupBox>
         <StackPanel Height="40" Orientation="Horizontal" Margin="0,0,10,0" HorizontalAlignment="Right">
-            <Button x:Name="ButtonSave" Height="35" Width="100" Command="{Binding SaveCommand}"
+            <Button x:Name="ButtonSave" Height="35" Width="100" Command="{Binding SaveCommand}" IsEnabled="{Binding ProductRecord.formIsValid, UpdateSourceTrigger=PropertyChanged}"
                         Foreground="White"  Background="#38608C" HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal" >
                     <Path Fill="#FFFF" Data="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/>
@@ -109,9 +113,9 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    
-                    
-                    
+
+
+
                     <DataGridTemplateColumn Width="50">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -127,5 +131,5 @@
             </DataGrid>
         </StackPanel>
     </StackPanel>
-    
+
 </Page>

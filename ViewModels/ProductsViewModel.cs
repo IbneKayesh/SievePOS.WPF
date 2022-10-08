@@ -4,7 +4,7 @@ using System.Windows.Input;
 using System.Windows;
 using SievePOS.Services.POS;
 using SievePOS.Models;
-using System.Threading.Tasks;
+using SievePOS.Utilities;
 
 namespace SievePOS.ViewModels
 {
@@ -12,10 +12,10 @@ namespace SievePOS.ViewModels
     {
        
         public string Title = "Products";
-        private ICommand _saveCommand;
-        private ICommand _resetCommand;
-        private ICommand _editCommand;
-        private ICommand _deleteCommand;
+        private ICommand? _saveCommand;
+        private ICommand? _resetCommand;
+        private ICommand? _editCommand;
+        private ICommand? _deleteCommand;
         private ProductService _repository;
         private PRODUCTS? _productsEntity = null;
         public ProductRecord ProductRecord { get; set; }

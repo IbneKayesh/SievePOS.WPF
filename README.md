@@ -15,4 +15,6 @@ Development Issues :
 <li>SQL Query</li>
 <li>Sidebar Panel</li>
 <li>MessagesBox oozy</li>
+<li>Number Only Textbox</li>
+<li>Error Binding, Submit Button Binding</li>
 </ol>
